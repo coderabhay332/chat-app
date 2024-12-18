@@ -1,12 +1,22 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import {BACKEND_URL} from "../config"
+import { Styles } from "./types";
 function App() {
-  const [ws, setWs] = useState(null); 
+  const [ws, setWs] = useState<WebSocket | null>(null); 
   const [roomId, setRoomId] = useState(""); 
   const [message, setMessage] = useState(""); 
-  const [chat, setChat] = useState([]); 
+  const [chat, setChat] =useState<ChatMessage[]>([]);
   const [joined, setJoined] = useState(false); 
-
+  interface Payload {
+    message: string;
+  }
+  
+  interface ChatMessage {
+    type: "chat" | "join";
+    payload: Payload;
+    sender?: string;
+  }
+  
   useEffect(() => {
     const socket = new WebSocket(BACKEND_URL);
 
@@ -44,7 +54,7 @@ function App() {
         roomId: roomId,
       },
     });
-
+    //@ts-ignore
     ws.send(joinMessage);
     setJoined(true);
     console.log(`Joined room: ${roomId}`);
@@ -59,7 +69,7 @@ function App() {
         message: message,
       },
     };
-
+    //@ts-ignore
     ws.send(JSON.stringify(chatMessage)); // Send the message to the backend
     setMessage(""); // Clear input field
   };
@@ -117,7 +127,7 @@ function App() {
 }
 
 
-const styles = {
+const styles: Styles = {
   container: {
     display: "flex",
     flexDirection: "column",
