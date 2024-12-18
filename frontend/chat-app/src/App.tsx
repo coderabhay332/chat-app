@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-
+import {BACKEND_URL} from "../config"
 function App() {
   const [ws, setWs] = useState(null); 
   const [roomId, setRoomId] = useState(""); 
@@ -8,7 +8,7 @@ function App() {
   const [joined, setJoined] = useState(false); 
 
   useEffect(() => {
-    const socket = new WebSocket("ws://localhost:8080");
+    const socket = new WebSocket(BACKEND_URL);
 
     socket.onopen = () => {
       console.log("WebSocket connection established");
