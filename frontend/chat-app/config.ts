@@ -1,0 +1,1 @@
+export const BACKEND_URL = "https://chat-app-teao.onrender.com"
