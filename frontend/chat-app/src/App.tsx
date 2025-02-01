@@ -1,22 +1,24 @@
 import { useState, useEffect } from "react";
-import {BACKEND_URL} from "../config"
+import { BACKEND_URL } from "../config";
 import { Styles } from "./types";
+
 function App() {
-  const [ws, setWs] = useState<WebSocket | null>(null); 
-  const [roomId, setRoomId] = useState(""); 
-  const [message, setMessage] = useState(""); 
-  const [chat, setChat] =useState<ChatMessage[]>([]);
-  const [joined, setJoined] = useState(false); 
+  const [ws, setWs] = useState<WebSocket | null>(null);
+  const [roomId, setRoomId] = useState("");
+  const [message, setMessage] = useState("");
+  const [chat, setChat] = useState<ChatMessage[]>([]);
+  const [joined, setJoined] = useState(false);
+
   interface Payload {
     message: string;
   }
-  
+
   interface ChatMessage {
     type: "chat" | "join";
     payload: Payload;
     sender?: string;
   }
-  
+
   useEffect(() => {
     const socket = new WebSocket(BACKEND_URL);
 
@@ -39,7 +41,6 @@ function App() {
 
     setWs(socket);
 
-    // Clean up the WebSocket connection on component unmount
     return () => {
       socket.close();
     };
@@ -70,8 +71,12 @@ function App() {
       },
     };
     //@ts-ignore
-    ws.send(JSON.stringify(chatMessage)); // Send the message to the backend
-    setMessage(""); // Clear input field
+    ws.send(JSON.stringify(chatMessage));
+    setMessage("");
+  };
+
+  const handleClearMessages = () => {
+    setChat([]); // Clears all messages
   };
 
   return (
@@ -120,12 +125,14 @@ function App() {
               Send
             </button>
           </div>
+          <button onClick={handleClearMessages} style={styles.clearButton}>
+            Clear Messages
+          </button>
         </div>
       )}
     </div>
   );
 }
-
 
 const styles: Styles = {
   container: {
@@ -187,6 +194,15 @@ const styles: Styles = {
   button: {
     padding: "10px 15px",
     backgroundColor: "#007BFF",
+    color: "#fff",
+    border: "none",
+    borderRadius: "5px",
+    cursor: "pointer",
+  },
+  clearButton: {
+    marginTop: "10px",
+    padding: "10px 15px",
+    backgroundColor: "#dc3545",
     color: "#fff",
     border: "none",
     borderRadius: "5px",

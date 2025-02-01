@@ -11,8 +11,12 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
+    "@types/dotenv": "^8.2.3",
+    "@types/nodemailer": "^6.4.17",
     "@types/websocket": "^1.0.10",
     "@types/ws": "^8.5.13",
+    "dotenv": "^16.4.7",
+    "nodemailer": "^6.10.0",
     "websocket": "^1.0.35",
     "ws": "^8.18.0"
   }
